@@ -37,7 +37,8 @@ export class GameLobby {
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
-    if (url.pathname === '/ws') return env.LOBBY.get(env.LOBBY.idFromName('main')).fetch(request);
+    // Nama baru ('apac') + locationHint: objek baru dibuat di Asia-Pasifik. Objek lama ('main') tetap di lokasi lamanya, jadi nama diganti.
+    if (url.pathname === '/ws') return env.LOBBY.get(env.LOBBY.idFromName('apac'), { locationHint: 'apac' }).fetch(request);
     return new Response('Tidak ditemukan', { status: 404 });
   },
 };
