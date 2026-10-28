@@ -1,3 +1,5 @@
+// Cloudflare Worker: menyajikan file game (assets) + server multiplayer lewat Durable Object.
+// Logika room/sim TIDAK diubah: memakai server/room.js dan src/core/sim.js yang sama dengan server Node.
 import { Lobby } from '../server/room.js';
 
 export class GameLobby {
@@ -29,7 +31,7 @@ export class GameLobby {
     this.timer = setInterval(() => this.lobby.tick(), 1000 / 60);
     this.reaper = setInterval(() => { const now = Date.now(); for (const s of this.socks) if (now - s.seen > 30000) { try { s.close(1000, 'idle'); } catch (e) {} } }, 10000);
   }
-  stopTimers() { clearInterval(this.timer); clearInterval(this.reaper); this.timer = this.reaper = null; }
+  stopTimers() { clearInterval(this.timer); clearInterval(this.reaper); this.timer = this.reaper = null; }   // tanpa pemain: DO boleh tidur (hemat kuota)
 }
 
 export default {

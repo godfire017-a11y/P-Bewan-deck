@@ -1,0 +1,15 @@
+name = "p-bewan-deck"
+main = "worker/index.js"
+compatibility_date = "2025-09-01"
+
+# File game disajikan langsung dari folder ini (lihat .assetsignore untuk yang dikecualikan)
+[assets]
+directory = "."
+
+[[durable_objects.bindings]]
+name = "LOBBY"
+class_name = "GameLobby"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["GameLobby"]
