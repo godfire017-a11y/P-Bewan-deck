@@ -1,0 +1,13 @@
+server/
+worker/
+tests/
+docs/
+scripts/
+node_modules/
+wrangler.toml
+.assetsignore
+package.json
+package-lock.json
+README.md
+.wrangler/
+.git/
