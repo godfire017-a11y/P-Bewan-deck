@@ -15,6 +15,16 @@ old = "$('srvUrl').value = store.get('srv', '');"
 new = "$('srvUrl').value = store.get('srv', /\\.workers\\.dev$|^localhost$/.test(location.hostname) ? (location.protocol === 'https:' ? 'wss://' : 'ws://') + location.host + '/ws' : '');"
 if s.count(old) != 1: sys.exit('GAGAL: baris srvUrl di src/main.js tidak ditemukan')
 open(p, 'w', encoding='utf-8').write(s.replace(old, new))
+# Zip untuk itch.io: isinya sama dengan game, tapi kolom Server sudah terisi alamat Worker ini. Diunduh dari /itch.zip
+ITCH_URL = 'wss://p-bewan-deck.godfire017.workers.dev/ws'
+itch_main = s.replace(old, "$('srvUrl').value = store.get('srv', '" + ITCH_URL + "');")
+if itch_main == s: sys.exit('GAGAL: tidak bisa membuat main.js untuk itch')
+with zipfile.ZipFile('itch.zip', 'w', zipfile.ZIP_DEFLATED) as out:
+    for name in z.namelist():
+        if name in KEEP or name.startswith('worker/') or name.endswith('/') or name.startswith('/') or '..' in name.split('/'): continue
+        if name == 'src/main.js': out.writestr(name, itch_main)
+        else: out.write(name, name)
+print('itch.zip', round(os.path.getsize('itch.zip') / 1048576, 1), 'MB')
 for f in ('index.html', 'server/room.js', 'src/core/sim.js', 'assets/models/bow.glb'):
     if not os.path.exists(f): sys.exit('GAGAL: file hilang setelah ekstrak: ' + f)
 print('OK')
